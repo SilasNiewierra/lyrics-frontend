@@ -1,8 +1,10 @@
 <template>
   <div id='app'>
     <el-container class='full-screen'>
+      <!-- Loading overlay -->
       <loading :active.sync='isLoading'
         :is-full-page=true></loading>
+      <!-- Navigation header -->
       <el-header>
         <el-menu
           :default-active='activeIndex'
@@ -15,11 +17,12 @@
           <el-menu-item class='menu-item' index='/'>Start</el-menu-item>
         </el-menu>
       </el-header>
+      <!-- Transistion between site changes -->
       <transition
         name='fade'
-        mode='out-in'
-      >
-      <router-view class='full-screen'></router-view>
+        mode='out-in'>
+        <!-- Router displaying the different sites -->
+        <router-view class='full-screen'></router-view>
       </transition>
     </el-container>
   </div>
@@ -27,9 +30,7 @@
 
 <script>
 import { bus } from './main'
-// Import loading component
 import Loading from 'vue-loading-overlay'
-// Import loading stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css'
 
 export default {
@@ -66,8 +67,6 @@ export default {
   --dark-text-color: #2c3e50;
   --accent-color: #C3453A;
   --subtle_hover-color: #eeeeee;
-
-  --card-width: 200px;
 }
 
 body {

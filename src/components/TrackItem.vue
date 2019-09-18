@@ -1,16 +1,17 @@
 <template>
     <el-row class='track_row'>
+        <!-- Track Cover Art - API doesnt provide it anymore -->
         <!-- <el-col :span='4' class='image_col'>
             <img class='track_image' v-bind:src='track_info.image_url' />
         </el-col> -->
-
+        <!-- Track name and artist name -->
         <el-col :span='22'>
             <p align='left' class='row_paragraph'>
                 <span class='track_name'>{{track_info.track_name}} <br></span>
                 <span> {{track_info.artist_name}}</span>
             </p>
         </el-col>
-
+        <!-- Check icon -->
         <el-col :span='2'>
             <p>
               <i v-if='track_info.selected' class='el-icon-check'></i>

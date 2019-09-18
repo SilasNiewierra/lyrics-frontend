@@ -1,7 +1,7 @@
 <template>
   <div>
-      <p class="heading">What is Lyrics?</p>
-
+    <p class="heading">What is Lyrics?</p>
+    <!-- App description -->
     <el-row>
       <el-col :span="8" :offset="8" class="col1">
         <p>Lyrics is a pretty straightforward web application.
@@ -9,12 +9,13 @@
         you see the words with the most impact in these songs.</p>
       </el-col>
     </el-row>
+    <!-- Divider image -->
     <el-row>
       <el-col :span="8" :offset="8" class="col2">
         <img class="divider-image" src="../assets/clean-whale-bg.png" />
       </el-col>
     </el-row>
-
+    <!-- Component description -->
     <el-row>
       <el-col :span="8" :offset="8" class="col1">
         <p>Components used in this project:</p>
@@ -26,6 +27,7 @@
           <p class="components"> initial images from <a href='https://pngtree.com/so/whale'>whale png from pngtree.com</a></p>
       </el-col>
     </el-row>
+    <!-- Bottom image -->
     <img class="bottom-image" src="../assets/sea-floor-trans.png"/>
   </div>
 </template>
