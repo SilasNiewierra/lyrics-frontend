@@ -59,7 +59,7 @@
       <!-- Tracking img from musixmatch API -->
       <img v-for='lyric in lyrics' v-bind:key='lyric.tracking_url' v-bind:src='lyric.tracking_url'/>
       <!-- Show bottom image is tracks have been found -->
-      <img v-if='checkTracks' class="bottom-image" src="../assets/ship-low-bg.png"/>
+      <img v-if='checkTracks' class="bottom-image" src="../assets/ship-background.png"/>
     </div>
 </template>
 
@@ -211,7 +211,7 @@ body, html{
   padding: 0px;
 }
 .img-bg{
-  background-image: url('../assets/ship-low-bg.png');
+  background-image: url('../assets/ship-background.png');
   width: 100%;
   background-position: bottom;
   background-repeat: no-repeat;

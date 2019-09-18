@@ -40,7 +40,7 @@ h1, h2 {
 }
 .img-banner{
   height: 100%;
-  background-image: url('../assets/background-start.png');
+  background-image: url('../assets/whale-background.png');
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;

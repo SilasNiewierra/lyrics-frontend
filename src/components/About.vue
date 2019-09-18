@@ -12,7 +12,7 @@
     <!-- Divider image -->
     <el-row>
       <el-col :span="8" :offset="8" class="col2">
-        <img class="divider-image" src="../assets/clean-whale-bg.png" />
+        <img class="divider-image" src="../assets/whale-divider.png" />
       </el-col>
     </el-row>
     <!-- Component description -->
@@ -28,7 +28,7 @@
       </el-col>
     </el-row>
     <!-- Bottom image -->
-    <img class="bottom-image" src="../assets/sea-floor-trans.png"/>
+    <img class="bottom-image" src="../assets/sea-background.png"/>
   </div>
 </template>
 
