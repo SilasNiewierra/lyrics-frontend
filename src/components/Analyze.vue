@@ -28,8 +28,8 @@
           </el-col>
         </el-row>
         <p></p>
-        <el-button @click='updatePage'>More Songs</el-button>
-        <el-button @click='getLyricsCombinedMusix'>Analyze Lyrics</el-button>
+        <el-button @click='updatePage'>Load More Songs</el-button>
+        <el-button v-if='this.selected_tracks.length > 0' @click='getLyricsCombinedMusix'>Analyze Lyrics</el-button>
       </div>
 
       <div class='no-content' v-if='!checkTracks && searched'>
@@ -108,38 +108,9 @@ export default {
         var url = this.base_url + '/tracks/' + this.input + '/' + this.current_page
         axios.get(url)
           .then(response => {
-            var i
-            for (i = 0; i < response.data.length; i++) {
-              // save artist name, track name, album name to do a detailed search in other API (happi api)
-              var cleanArtistName = response.data[i].track['artist_name'].split('(')[0]
-              var cleanTrackName = response.data[i].track['track_name'].replace(/ *\([^)]*\) */g, '')
-              cleanTrackName = cleanTrackName.split(' - ')[0]
-              // var albumId = response.data[i].track['album_id']
-              var albumCover = response.data[i].track['album_coverart_350x350']
-              if (!albumCover) {
-                albumCover = '../static/no-cover-placeholder.png'
-              }
+            var combinedList = [...new Set([...this.track_data, ...response.data])]
+            this.track_data = combinedList
 
-              // window.console.log(albumCover)
-              // remove duplicate tracks
-              var trackFound = false
-              for (var track of this.track_data) {
-                if (cleanTrackName === track['track_name']) {
-                  trackFound = true
-                  continue
-                }
-              }
-              if (!trackFound) {
-                var obj = {
-                  'track_name': cleanTrackName,
-                  'artist_name': cleanArtistName,
-                  'track_id': response.data[i].track['track_id'],
-                  'image_url': albumCover,
-                  'selected': false
-                }
-                this.track_data.push(obj)
-              }
-            }
             if (this.track_data.length <= 0) {
               this.searched = true
             } else {
@@ -166,135 +137,25 @@ export default {
       found['selected'] = !found['selected']
     },
     getLyricsCombinedMusix () {
-      this.toggleLoading(true)
-      this.lyrics = []
-      var promises = []
-
-      this.selected_tracks.forEach(track => {
-        var url = this.base_url + '/lyrics/' + track
-        promises.push(axios.get(url))
-      })
-
-      axios.all(promises)
-        .then(results => {
-          results.forEach(response => {
-            this.lyrics.push(response.data)
+      if (this.selected_tracks.length > 0) {
+        this.toggleLoading(true)
+        this.word_data = []
+        var url = this.base_url + '/all_lyrics/' + this.selected_tracks
+        axios.get(url)
+          .then(response => {
+            window.console.log(response)
+            for (var wordObj in response.data) {
+              this.word_data.push({'name': wordObj, 'count': response.data[wordObj]['count']})
+            }
             this.toggleLoading(false)
           })
-          this.createWordMap()
-        })
-        .catch(error => {
-          window.console.log(error)
-        })
-    },
-    createWordMap () {
-      var wordCountMap = {}
-      this.word_data = []
-
-      for (var song of this.lyrics) {
-        var songLyric = song['lyrics']
-        var language = song['language']['language']
-        // musixmatch remove free version tags in lyrics
-        songLyric = songLyric.split('...')[0]
-
-        // remove line breaks
-        songLyric = songLyric.replace(/(\r\n|\n|\r)/gm, ' ')
-
-        // song_lyric = song_lyric.replace(/\s+/g,' ')
-        songLyric = songLyric.replace('?', '')
-        songLyric = songLyric.replace('`', ' ')
-
-        // lower case
-        songLyric = songLyric.toString().toLowerCase()
-
-        // stem (combine stems of the words likes/like = like)
-
-        // tokenize (split into single words)
-        songLyric = songLyric.split(' ')
-
-        // remove stopwords in the respective language
-        songLyric = sw.removeStopwords(songLyric, this.selectStopwordLanguage(language))
-
-        for (var word of songLyric) {
-          if (word in wordCountMap) {
-            wordCountMap[word].count += 1
-          } else {
-            wordCountMap[word] = {'count': 1}
-          }
-        }
-      }
-      for (var wordObj in wordCountMap) {
-        this.word_data.push({'name': wordObj, 'count': wordCountMap[wordObj]['count']})
+          .catch(error => {
+            console.log(error)
+          })
       }
     },
     toggleLoading (state) {
       bus.$emit('loading', state)
-    },
-    selectStopwordLanguage (language) {
-      switch (language) {
-        case 'af':
-          return sw.af
-        case 'ar':
-          return sw.ar
-        case 'bn':
-          return sw.bn
-        case 'br':
-          return sw.br
-        case 'da':
-          return sw.da
-        case 'de':
-          return sw.de
-        case 'en':
-          return sw.en
-        case 'es':
-          return sw.es
-        case 'fa':
-          return sw.fa
-        case 'fi':
-          return sw.fi
-        case 'fr':
-          return sw.fr
-        case 'ha':
-          return sw.ha
-        case 'he':
-          return sw.he
-        case 'hi':
-          return sw.hi
-        case 'id':
-          return sw.id
-        case 'it':
-          return sw.it
-        case 'lgg':
-          return sw.lgg
-        case 'lggo':
-          return sw.lggo
-        case 'nl':
-          return sw.nl
-        case 'no':
-          return sw.no
-        case 'pl':
-          return sw.pl
-        case 'pt':
-          return sw.pt
-        case 'pa':
-          return sw.pa
-        case 'ru':
-          return sw.ru
-        case 'so':
-          return sw.so
-        case 'st':
-          return sw.st
-        case 'sv':
-          return sw.sv
-        case 'sw':
-          return sw.sw
-        case 'vi':
-          return sw.vi
-        case 'yo':
-          return sw.yo
-        case 'zu':
-          return sw.zu
-      }
     }
   },
   computed: {
