@@ -59,7 +59,6 @@ import Track from './TrackItem'
 import wordcloud from 'vue-wordcloud'
 
 const axios = require('axios')
-const sw = require('stopword')
 
 export default {
   name: 'Analyze',
