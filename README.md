@@ -1,6 +1,6 @@
 # lyrics
 
-> A Vue.js project
+A simple analyzer for lyrics. See whuch words are used the most in your favorite songs.
 
 ## Build Setup
 
