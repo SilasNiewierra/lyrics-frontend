@@ -2,6 +2,8 @@
 
 A simple analyzer for lyrics. See which words are used the most in your favorite songs.
 
+Try the demo on heroku: https://lyrics-frontend.herokuapp.com/
+
 ## Build Setup
 
 ``` bash
